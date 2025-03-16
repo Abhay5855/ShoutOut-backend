@@ -1,6 +1,5 @@
 import { Schema } from "mongoose";
 import mongoose from "mongoose";
-import { type } from "os";
 
 const userSchema = new Schema(
   {
@@ -27,7 +26,7 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
-    verificationToken: {
+    verifyEmailToken: {
       type: String,
     },
   },
