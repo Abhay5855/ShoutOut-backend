@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import User from "../../models/user/UserModel.js";
 import { userSchema } from "../../validations/user.js";
+import crypto from "crypto";
+import { generateToken } from "../../helpers/index.js";
 
 const registerUser = async (req, res) => {
   const { error, value } = userSchema.validate(req.body, { abortEarly: false });
@@ -24,6 +26,13 @@ const registerUser = async (req, res) => {
         message: error.details.map((err) => err.message),
       });
     }
+
+    //Verify email token generation
+    const verifyEmailToken = generateToken();
+
+    console.log(verifyEmailToken, "verify email token");
+
+    // Verify email address
 
     const user = new User({
       ...value,
