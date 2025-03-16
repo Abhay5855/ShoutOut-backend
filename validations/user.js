@@ -6,6 +6,12 @@ export const userSchema = Joi.object({
     .email({
       minDomainSegments: 2,
       tlds: { allow: ["com", "net"] },
+    })
+    .messages({
+      "string.empty": "Email is required.",
+      "string.min": "Email must be at least {#limit} characters.",
+      "string.max": "Email cannot exceed {#limit} characters.",
+      "string.email": "Please enter a valid email address.",
     }),
 
   username: Joi.string().trim().alphanum().min(3).max(30).required().messages({
