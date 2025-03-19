@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import bcrypt from "bcrypt";
 
-const generateEmailVerifyToken = () => {
+const generateRandomToken = () => {
   const verifyToken = crypto.randomBytes(32).toString("hex");
 
   return verifyToken;
@@ -13,4 +13,4 @@ const comparePassword = async (password, userPassword) => {
   return comparisionResult;
 };
 
-export { generateEmailVerifyToken, comparePassword };
+export { generateRandomToken, comparePassword };

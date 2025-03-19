@@ -1,5 +1,6 @@
 import { Schema } from "mongoose";
 import mongoose from "mongoose";
+import { type } from "os";
 
 const userSchema = new Schema(
   {
@@ -28,6 +29,15 @@ const userSchema = new Schema(
     },
     verifyEmailToken: {
       type: String,
+    },
+
+    resetPasswordToken: {
+      type: String,
+    },
+
+    resetPasswordTokenExpiry: {
+      type: Date,
+      expires: 3600,
     },
   },
   {
