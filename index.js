@@ -4,6 +4,7 @@ import cors from "cors";
 import DBConnection from "./utils/db_connection.js";
 import userRoutes from "./routes/user/user.routes.js";
 const app = express();
+import cookieParser from "cookie-parser";
 
 // Middleware
 app.use(express.json());
@@ -12,6 +13,8 @@ app.use(
     extended: true,
   })
 );
+
+app.use(cookieParser());
 
 //cors configuaration
 app.use(
