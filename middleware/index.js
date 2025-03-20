@@ -4,8 +4,8 @@ const verifyIsLoggedIn = async (req, res, next) => {
   const token = req.cookies?.shoutout_access_token;
 
   if (!token) {
-    res.status(401).json({
-      message: "Invalid token access denied",
+    return res.status(401).json({
+      error: "Invalid token access denied",
     });
   }
 
@@ -17,7 +17,7 @@ const verifyIsLoggedIn = async (req, res, next) => {
     next();
   } catch (err) {
     res.status(500).json({
-      message: "Something went wrong",
+      error: "Something went wrong",
     });
   }
 };

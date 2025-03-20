@@ -15,14 +15,14 @@ const registerUser = async (req, res) => {
 
     const checkIfEmailExists = await User.findOne({ email: value.email });
     if (checkIfEmailExists) {
-      return res.status(409).json({
-        message: "Email already exists !",
+      return res.status(400).json({
+        error: "User already exists !",
       });
     }
 
     if (error) {
       return res.status(500).json({
-        message: error.details.map((err) => err.message),
+        error: error.details.map((err) => err.message),
       });
     }
 
@@ -57,12 +57,12 @@ const registerUser = async (req, res) => {
 
     res.status(201).json({
       status: 201,
-      message: "User creted successfully",
+      error: "User creted successfully",
       user,
     });
   } catch (err) {
     res.status(500).json({
-      message: "Something went wrong",
+      error: "Something went wrong",
     });
   }
 };
@@ -74,7 +74,7 @@ const verifyEmail = async (req, res) => {
 
     if (!user) {
       return res.status(404).json({
-        message: "Token is invalid",
+        error: "Token is invalid",
       });
     }
 
@@ -87,7 +87,7 @@ const verifyEmail = async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({
-      message: "Something went wrong",
+      error: "Something went wrong",
     });
   }
 };
@@ -98,7 +98,7 @@ const authenticateUser = async (req, res) => {
   const user = await User.findOne({ email });
   if (!user) {
     return res.status(400).json({
-      message: "User not found",
+      error: "User not found",
     });
   }
 
@@ -111,7 +111,7 @@ const authenticateUser = async (req, res) => {
 
     if (!comparedPasswordResult) {
       return res.status(400).json({
-        message: "The password does not match!",
+        error: "The password does not match!",
       });
     }
 
@@ -138,7 +138,7 @@ const authenticateUser = async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({
-      message: "Something went wrong",
+      error: "Something went wrong",
     });
   }
 };
@@ -153,7 +153,7 @@ const sendPasswordResetEmail = async (req, res) => {
 
   if (!user) {
     res.status(401).json({
-      message: "Email not found",
+      error: "Email not found",
     });
   }
 
@@ -192,7 +192,7 @@ const sendPasswordResetEmail = async (req, res) => {
   } catch (err) {
     console.log(err.message);
     res.status(500).json({
-      message: "Something went wrong",
+      error: "Something went wrong",
     });
   }
 };
@@ -203,7 +203,7 @@ const forgotPassword = async (req, res) => {
 
   if (password !== confirm_password) {
     return res.status(400).json({
-      message: "password and confirm password does not match",
+      error: "password and confirm password does not match",
     });
   }
   try {
@@ -211,20 +211,15 @@ const forgotPassword = async (req, res) => {
       resetPasswordToken: token,
     });
 
-    console.log(user);
-
     if (!user) {
-      return res.status(404).json({
-        message: "Invalid or expired forgot password token",
+      return res.status(400).json({
+        error: "Invalid or expired forgot password token",
       });
     }
 
     // hash the password
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-    console.log(hashedPassword, "hashpassword");
-
     user.resetPasswordToken = undefined;
     user.resetPasswordTokenExpiry = undefined;
     user.password = hashedPassword;
@@ -237,7 +232,7 @@ const forgotPassword = async (req, res) => {
     console.log(err.message);
 
     res.status(500).json({
-      message: "something went wrong",
+      error: "something went wrong",
     });
   }
 };
